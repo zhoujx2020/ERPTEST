@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Implementation-Title: wcs_eureka
+Implementation-Version: 0.0.1
+Built-By: LXZ
+Implementation-Vendor-Id: wcs.test
+Build-Jdk: 1.8.0_131
+Implementation-URL: http://maven.apache.org/wcs_eureka
+Created-By: Maven Integration for Eclipse
+
