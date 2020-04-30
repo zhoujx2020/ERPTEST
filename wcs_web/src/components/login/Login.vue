@@ -58,23 +58,25 @@ import qs from 'qs'
           this.$message.error('请输入密码');
           return;
         }
-        axios.post('/api/userdb/login',qs.stringify(this.form))
-            .then((res) => {
-              let sums = res.data.data;
-              if(res.data.code == 0){
-                // this.$message.success('登录成功'+res.data.data);
-                this.$router.push({name:'home',
-                                    params:{site:this.form.userNo}});
-              }else{
-                this.$message.error(res.data+"---");
-              }
-          })
-          .catch((err) => {
-            // if(String(err).indexOf("Request failed with status code 504") > -1){
-            if(String(err).length > 9){
-              this.$message.error('网络异常或者后台服务未启动'+err);
-            }
-          })
+        // axios.post('/api/userdb/login',qs.stringify(this.form))
+        //     .then((res) => {
+        //       let sums = res.data.data;
+        //       if(res.data.code == 0){
+        //         // this.$message.success('登录成功'+res.data.data);
+        //         this.$router.push({name:'home',
+        //                             params:{site:this.form.userNo}});
+        //       }else{
+        //         this.$message.error(res.data+"---");
+        //       }
+        //   })
+        //   .catch((err) => {
+        //     // if(String(err).indexOf("Request failed with status code 504") > -1){
+        //     if(String(err).length > 9){
+        //       this.$message.error('网络异常或者后台服务未启动'+err);
+        //     }
+        //   })
+        this.$router.push({name:'home',
+                                    params:{site:this.form.userNo}})
 
           this.isBtnLoading = false;
       },
