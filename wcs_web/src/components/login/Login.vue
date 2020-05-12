@@ -58,6 +58,10 @@ import qs from 'qs'
           this.$message.error('请输入密码');
           return;
         }
+        axios.interceptors.request.use(config =>{
+          config.headers.Auto = window.sessionStorage.getItem('token')
+          return config
+        }),
         // axios.post('/api/userdb/login',qs.stringify(this.form))
         //     .then((res) => {
         //       let sums = res.data.data;
@@ -75,7 +79,7 @@ import qs from 'qs'
         //       this.$message.error('网络异常或者后台服务未启动'+err);
         //     }
         //   })
-        this.$router.push({name:'home',
+        this.$router.push({name:'home1',
                                     params:{site:this.form.userNo}})
 
           this.isBtnLoading = false;
