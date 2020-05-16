@@ -9,11 +9,11 @@
       <el-form  label-width="0px" class="login_form" :model="form" ref="formRef">
         <!-- 用户名 -->
         <el-form-item prop="userNo" >
-          <el-input prefix-icon="el-icon-user" v-model="form.userNo"></el-input>
+          <el-input prefix-icon="el-icon-user" v-model="form.username"></el-input>
         </el-form-item>
         <!-- 密码 -->
         <el-form-item  prop="userPassword">
-          <el-input prefix-icon="el-icon-lock" v-model="form.userPassword" type="password"></el-input>
+          <el-input prefix-icon="el-icon-lock" v-model="form.password" type="password"></el-input>
         </el-form-item>
         <!-- 按钮 -->
          <el-form-item class="btns">
@@ -35,8 +35,8 @@ import qs from 'qs'
     data() {
       return {
         form:{
-          userNo:'',
-          userPassword:'',
+          username:'',
+          password:'',
         },
         age: '',
         insetTime:'',
@@ -62,26 +62,36 @@ import qs from 'qs'
         // this.form.userNo = ''
         // this.form.userPassword = ''
       },
-      login() {
+      async login() {
         
         if(this.isBtnLoading){
           this.$message.success('正在登陆中请稍后再按。。。');
           return;
         }
         this.isBtnLoading = true;
-        if (!this.form.userNo) {
+        if (!this.form.username) {
           this.$message.error('请输入用户名');
-          this.userNo = 'AAAAAA';
           return;
         }
-        if (!this.form.userPassword) {
+        if (!this.form.password) {
           this.$message.error('请输入密码');
           return;
         }
-        axios.interceptors.request.use(config =>{
-          config.headers.Auto = window.sessionStorage.getItem('token')
-          return config
-        }),
+        const { data : res} = await this.$http.post('login',this.form)
+        // console.log(res.meta.status)
+        if(res.meta.status != 200){
+            this.$message.error(res.meta.msg);
+            this.isBtnLoading = false
+            return 
+        }else{
+            this.$message.success("登录成功");
+            this.$router.push({name:'home1',params:{site:this.form.username}})
+            console.log(res)
+            window.sessionStorage.setItem('token',res.data.token)
+            this.isBtnLoading = false
+            return ;
+        }
+
         // axios.post('/api/userdb/login',qs.stringify(this.form))
         //     .then((res) => {
         //       let sums = res.data.data;
@@ -99,17 +109,14 @@ import qs from 'qs'
         //       this.$message.error('网络异常或者后台服务未启动'+err);
         //     }
         //   })
-        this.$router.push({name:'home1',
-                                    params:{site:this.form.userNo}})
-
-          this.isBtnLoading = false;
+        
       },
       doTest(){
       }
     }
   }
 </script>
-<style>
+<style scoped>
  .login_container{
    background-color: #2b4b6b;
    height: 100%;
